@@ -1,0 +1,88 @@
+`timescale 1ns / 1ps
+ 
+module i2c(
+input clk,rst,
+inout sdi,
+output sclk
+    );
+    
+reg tclk = 0;
+integer clk_counter = 0;
+////////////////////////////////////////////////////////
+always@(posedge clk) begin
+if(clk_counter < 125) 
+  clk_counter <= clk_counter + 1;
+else begin
+  clk_counter <= 0;
+  tclk <= ~tclk;
+end
+end
+///////////////////////////////////////////////////////
+integer data_counter = 0;
+always@(posedge tclk or posedge rst) begin
+ if(rst == 1'b1) 
+   data_counter <= 0;
+  else begin 
+        if (data_counter <= 31) 
+            data_counter <= data_counter + 1;
+         else
+            data_counter <= 0;
+    end   
+end
+/////////////////////////////////////////////////////
+reg tnclk = 0;
+reg tdata = 0;
+ 
+always@(posedge clk or posedge rst) begin
+  if (rst == 1'b1) begin 
+    tnclk <= 1;
+    tdata <= 1;
+   end
+   else
+     case(data_counter) 
+      0: begin tnclk <= 1; tdata <= 1; end
+      1: tdata <= 0;
+      2: tnclk <= 0;
+      //Slave Address 8'hA0
+      3: tdata <= 1;
+      4: tdata <= 0;
+      5: tdata <= 1;
+      6: tdata <= 0;
+      7: tdata <= 0;
+      8: tdata <= 0;
+      9: tdata <= 0;
+      10: tdata <= 0;  
+      
+      //Wait for ACK
+      11: tdata <= 1'bz;
+      // Memory Location Address
+      12: tdata <= 0;
+      13: tdata <= 0;
+      14: tdata <= 0;
+      15: tdata <= 0;
+      16: tdata <= 0;
+      17: tdata <= 0;
+      18: tdata <= 0;
+      19: tdata <= 0;
+      //Wait for ACK
+      20: tdata <= 1'bz;
+      ///Data
+           21: tdata <= 1;
+           22: tdata <= 0;
+           23: tdata <= 1; 
+           24: tdata <= 0;
+           25: tdata <= 1;
+           26: tdata <= 0;
+           27: tdata <= 1;
+           28: tdata <= 0;
+       //Wait for ACK
+           29: tdata <= 1'bz;     
+           ///Stop bits
+           30 : begin tnclk <=1; tdata <= 0; end
+           31 : tdata <= 1;
+           default : tdata <= 1'bz; 
+     endcase
+end  
+assign sclk = ((data_counter >= 3 ) & (data_counter < 30))? tclk : tnclk;
+assign sdi  = tdata;  
+endmodule

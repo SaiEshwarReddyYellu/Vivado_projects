@@ -12,3 +12,6 @@
 -Implemented Using Verilog 
 
 ![seq_det](https://github.com/SaiEshwarReddyYellu/Vivado_projects/blob/main/I2C_Protocol/Simulation_waveform.JPG)
+
+## LCD_interface
+![seq_det](https://github.com/SaiEshwarReddyYellu/Vivado_projects/blob/main/Parallel_protocol/simulation_waveform.JPG)

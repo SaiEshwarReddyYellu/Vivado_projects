@@ -8,3 +8,7 @@
 
 ![seq_det](https://github.com/SaiEshwarReddyYellu/Vivado_projects/blob/main/8x1_mux/simulation_waveform.JPG)
 
+## I2C_Protocol
+-Implemented Using Verilog 
+
+![seq_det](https://github.com/SaiEshwarReddyYellu/Vivado_projects/blob/main/I2C_Protocol/Simulation_waveform.JPG)

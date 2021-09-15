@@ -1,0 +1,67 @@
+`timescale 1ns / 1ps
+
+//rs= Register select => 0- command input  1-data input
+//rw= read/write pin, en=enable pin
+
+
+module lcd(
+    input clk,
+    output rs,rw,en,
+    output [7:0] dout
+    );
+ 
+ reg rst=0,rwt=0,ent=0;
+ reg [7:0]temp;
+ 
+ integer count=0;
+ reg [7:0] data [7:0];
+ 
+ initial begin
+ //commands to start LCD, rs=0
+data[0] = 8'h38;
+data[1] = 8'h0c;
+data[2] = 8'h06;
+data[3] = 8'h01;
+data[4] = 8'hc0;
+ 
+/// data to be displayed on LCD, rs = 1 data signal
+data[5] = 8'h41;    //A,B,C ASCII Values
+data[6] = 8'h42;
+data[7] = 8'h43;
+ 
+ end
+ 
+ always @(posedge clk) begin
+ if(count < 5)
+    count <= count+1;
+ else
+    count <= 0;
+    ent <= ~ent;
+ end 
+ 
+
+reg [4:0] j;
+always @(negedge ent) begin
+if(j <= 4) begin
+    rst <= 0;
+    rwt <= 0;
+    temp <= data[j];
+    j <= j+1;
+end 
+else if (j > 4 && j < 8) begin
+    rst <=1;
+    rwt <=0;
+    temp <= data[j];
+    j <= j+1;
+end
+else 
+    j <=0;
+end 
+ 
+ assign rs = rst;
+ assign rw = rwt;
+ assign dout = temp;
+ assign en = ent;
+    
+endmodule
+

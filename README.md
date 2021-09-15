@@ -1,2 +1,5 @@
 # Vivado_projects
-Different projects that are done in Vivado using Verilog and VHDL languages
+## MUX
+- Multiplexer
+
+![seq_det](https://github.com/SaiEshwarReddyYellu/Vivado_projects/blob/main/8x1_mux/simulation_waveform.JPG)

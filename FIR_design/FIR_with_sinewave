@@ -1,0 +1,4 @@
+# VHDL Program
+## SPI
+- Serial Peripheral Interface (SPI) is a synchronous communication protocol for devices to communicate in a master-slave relationship
+![seq_det](https://github.com/deepakravibabu/VHDL/blob/master/SPI/Simulation_Waveform/spi_waveform_output.png)
